@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>¡Felicidades, Amor!</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #FFFACD; /* Amarelo claro suave (Lemon Chiffon) */
+            text-align: center;
+            color: #4A0070; /* Roxo escuro para el texto principal */
+            transition: background-color 0.5s ease;
+            overflow: hidden;
+        }
+        #intro {
+            animation: fadeIn 2s ease-in-out;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+            position: relative;
+        }
+        h1 {
+            color: #FFD700; /* Amarelo Ouro vibrante para el título */
+            font-size: 2.8em;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        p {
+            color: #555;
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        button {
+            background-color: #FFEB3B; /* Amarelo canário para el botón */
+            color: #4A0070; /* Texto del botón en roxo escuro */
+            padding: 18px 35px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.6em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+        button:hover {
+            background-color: #FFC107;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.35);
+        }
+        #heart-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            font-size: 20em;
+            color: #E74C3C; /* Cor vermelha para el corazón */
+            opacity: 0;
+            z-index: 100;
+            pointer-events: none;
+            animation-fill-mode: forwards;
+        }
+        #video-area {
+            display: none;
+            margin-top: 40px;
+            max-width: 90%; /* Isso limitará a largura máxima, mas o vídeo será 640px */
+            animation: fadeIn 1.5s ease-in-out;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            z-index: 5;
+            position: relative;
+        }
+        #celebrationVideoContainer { /* Contêiner para o iframe do YouTube */
+            position: relative;
+            width: 100%; /* Isso aqui não afetará o vídeo que está com tamanho fixo */
+            /* As linhas abaixo foram COMENTADAS para o TESTE de tamanho fixo, pois não são necessárias com width/height fixos */
+            /* padding-bottom: 56.25%; */
+            /* height: 0; */
+            /* min-height: 200px; */ /* Com tamanho fixo, este também não é necessário */
+            overflow: hidden;
+            border-radius: 10px; /* Borda arredondada para o contêiner do vídeo */
+        }
+        #celebrationVideoContainer iframe {
+            /* As linhas abaixo foram COMENTADAS para o TESTE de tamanho fixo, pois não são necessárias */
+            /* position: absolute; */
+            /* top: 0; */
+            /* left: 0; */
+            /* width: 100%; */
+            /* height: 100%; */
+
+            /* ESTAS SÃO AS LINHAS QUE DEFINEM O TAMANHO FIXO DO VÍDEO */
+            width: 640px;
+            height: 360px;
+            border: 0;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes heartPopAndFade {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            30% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            70% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1.5);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="intro">
+        <h1>¡Felicidades, mi amor! 🎉</h1>
+        <p>¡Estoy tan orgulloso(a) de ti por este nuevo logro! Haz clic en el botón para nuestra celebración.</p>
+        <button id="celebrateButton">¡Celebrar!</button>
+    </div>
+
+    <div id="heart-container">
+        ❤️
+    </div>
+
+    <div id="video-area">
+        <div id="celebrationVideoContainer"></div>
+    </div>
+
+    <script>
+        document.getElementById('celebrateButton').addEventListener('click', function() {
+            document.getElementById('intro').style.display = 'none';
+
+            const heartContainer = document.getElementById('heart-container');
+            const videoArea = document.getElementById('video-area');
+            const videoContainer = document.getElementById('celebrationVideoContainer');
+            
+            console.log("Valor de videoContainer (debe ser el elemento HTML):", videoContainer);
+
+            // Muestra y anima el corazón
+            heartContainer.style.animation = 'heartPopAndFade 2s ease-out forwards';
+
+            setTimeout(() => {
+                heartContainer.style.display = 'none'; // Esconde el corazón
+                videoArea.style.display = 'block'; // Muestra el área del video
+                console.log("Timeout ejecutado. Intentando añadir el video.");
+
+                const youtubeEmbedUrl = 'https://www.youtube.com/embed/oHuv8HETXAw?si=OqE4--q4KhMGtPrY';
+
+                const youtubeIframe = document.createElement('iframe');
+                youtubeIframe.src = `${youtubeEmbedUrl}?autoplay=1&controls=1&showinfo=0&rel=0&modestbranding=1`;
+                youtubeIframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                youtubeIframe.allowFullscreen = true;
+
+                videoContainer.innerHTML = '';
+                videoContainer.appendChild(youtubeIframe);
+                console.log("Video iframe añadido al DOM.");
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
